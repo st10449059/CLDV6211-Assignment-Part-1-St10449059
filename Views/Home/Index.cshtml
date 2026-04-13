@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿@model IEnumerable<CLDV6211_Assignment_Part_1_St10449059.Models.Venue>
+<div class="container text-center py-5">
+    <h1 class="display-4 text-primary fw-bold">EventEase Dashboard</h1>
+    <div class="row g-4 mt-4">
+        <div class="col-md-4"><a asp-controller="Venues" asp-action="Index" class="btn btn-primary w-100 p-4">📍 Manage Venues</a></div>
+        <div class="col-md-4"><a asp-controller="Events" asp-action="Index" class="btn btn-success w-100 p-4">📅 Manage Events</a></div>
+        <div class="col-md-4"><a asp-controller="Bookings" asp-action="Index" class="btn btn-info w-100 p-4 text-white">🎟️ Manage Bookings</a></div>
+    </div>
 </div>
+<div class="container pb-5">
+    <h3>Registered Venues</h3>
+    <table class="table table-hover shadow-sm bg-white">
+        <thead class="table-dark"><tr><th>Image</th><th>Name</th><th>Location</th></tr></thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="@(item.ImageUrl ?? "https://via.placeholder.com/60")" width="60" /></td>
+                    <td>@item.VenueName</td>
+                    <td>@item.Location</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
