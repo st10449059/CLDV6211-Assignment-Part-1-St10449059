@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CLDV6211_Assignment_Part_1_St10449059.Models.Venue>
+
 <div class="container text-center py-5">
     <h1 class="display-4 text-primary fw-bold">EventEase Dashboard</h1>
     <div class="row g-4 mt-4">
@@ -7,20 +8,90 @@
         <div class="col-md-4"><a asp-controller="Bookings" asp-action="Index" class="btn btn-info w-100 p-4 text-white">🎟️ Manage Bookings</a></div>
     </div>
 </div>
+
 <div class="container pb-5">
-    <h3>Registered Venues</h3>
+    <h3 class="mt-4">📍 Registered Venues</h3>
     <table class="table table-hover shadow-sm bg-white">
-        <thead class="table-dark"><tr><th>Image</th><th>Name</th><th>Location</th></tr></thead>
+        <thead class="table-dark">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Location</th>
+            </tr>
+        </thead>
         <tbody>
-            @foreach (var item in Model)
+            @if (Model != null && Model.Any())
             {
-                <tr>
-                    <td><img src="@(item.ImageUrl ?? "https://via.placeholder.com/60")" width="60" /></td>
-                    <td>@item.VenueName</td>
-                    <td>@item.Location</td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/60" : item.ImageUrl)"
+                                 width="60" height="40" style="object-fit: cover; border-radius: 4px;" />
+                        </td>
+                        <td><strong>@item.VenueName</strong></td>
+                        <td>@item.Location</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3" class="text-center text-muted py-4">No venues registered yet.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 class="mt-5">📅 Upcoming Events</h3>
+    <table class="table table-hover shadow-sm bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Venue</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.Events != null && ((List<CLDV6211_Assignment_Part_1_St10449059.Models.Event>)ViewBag.Events).Any())
+            {
+                @foreach (var ev in (List<CLDV6211_Assignment_Part_1_St10449059.Models.Event>)ViewBag.Events)
+                {
+                    <tr>
+                        <td><strong>@ev.EventName</strong></td>
+                        <td>@ev.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@(ev.Venue?.VenueName ?? "N/A")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3" class="text-center text-muted py-4">No events scheduled.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 class="mt-5">🎟️ Recent Bookings</h3>
+    <table class="table table-hover shadow-sm bg-white mb-5">
+        <thead class="table-dark">
+            <tr>
+                <th>Attendee Name</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.Bookings != null && ((List<CLDV6211_Assignment_Part_1_St10449059.Models.Booking>)ViewBag.Bookings).Any())
+            {
+                @foreach (var bk in (List<CLDV6211_Assignment_Part_1_St10449059.Models.Booking>)ViewBag.Bookings)
+                {
+                    <tr>
+                        <td><strong>@bk.AttendeeName</strong></td>
+                        <td>@(bk.Event?.EventName ?? "N/A")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="2" class="text-center text-muted py-4">No bookings recorded yet.</td></tr>
             }
         </tbody>
     </table>
 </div>
-
