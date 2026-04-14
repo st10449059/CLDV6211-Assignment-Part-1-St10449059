@@ -1,0 +1,22 @@
+﻿CREATE TABLE Venues (
+    VenueId INT PRIMARY KEY IDENTITY(1,1),
+    VenueName NVARCHAR(100) NOT NULL,
+    Location NVARCHAR(200) NOT NULL,
+    ImageUrl NVARCHAR(MAX) NULL
+);
+
+CREATE TABLE Events (
+    EventId INT PRIMARY KEY IDENTITY(1,1),
+    EventName NVARCHAR(100) NOT NULL,
+    EventDate DATETIME NOT NULL,
+    ImageUrl NVARCHAR(MAX) NULL,
+    VenueId INT NOT NULL,
+    FOREIGN KEY (VenueId) REFERENCES Venues(VenueId)
+);
+
+CREATE TABLE Bookings (
+    BookingId INT PRIMARY KEY IDENTITY(1,1),
+    AttendeeName NVARCHAR(100) NOT NULL,
+    EventId INT NOT NULL,
+    FOREIGN KEY (EventId) REFERENCES Events(EventId)
+);
