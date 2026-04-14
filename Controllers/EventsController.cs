@@ -10,7 +10,7 @@ using CLDV6211_Assignment_Part_1_St10449059.Models;
 
 namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
 {
-    
+
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -152,13 +152,23 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
+            // Includes related bookings to allow manual cascade deletion
+            var @event = await _context.Events
+                .Include(e => e.Bookings)
+                .FirstOrDefaultAsync(m => m.EventId == id);
+
             if (@event != null)
             {
+                // Remove child bookings first to prevent foreign key errors
+                if (@event.Bookings != null)
+                {
+                    _context.Bookings.RemoveRange(@event.Bookings);
+                }
+
                 _context.Events.Remove(@event);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

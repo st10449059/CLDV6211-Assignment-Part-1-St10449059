@@ -25,7 +25,8 @@ CREATE TABLE Events (
      * events and ensures every event is mapped to a valid location (Elmasri & Navathe, 2017).
      */
     VenueId INT NOT NULL,
-    FOREIGN KEY (VenueId) REFERENCES Venues(VenueId)
+    -- ADDED: ON DELETE CASCADE to allow deleting Venues that have Events
+    FOREIGN KEY (VenueId) REFERENCES Venues(VenueId) ON DELETE CASCADE
 );
 
 -- 3. Create Booking Table (1:Many Relationship with Events)
@@ -39,5 +40,6 @@ CREATE TABLE Bookings (
      * is vital for accurate data reporting and analysis (Connolly & Begg, 2015).
      */
     EventId INT NOT NULL,
-    FOREIGN KEY (EventId) REFERENCES Events(EventId)
+    -- ADDED: ON DELETE CASCADE to allow deleting Events that have Bookings
+    FOREIGN KEY (EventId) REFERENCES Events(EventId) ON DELETE CASCADE
 );

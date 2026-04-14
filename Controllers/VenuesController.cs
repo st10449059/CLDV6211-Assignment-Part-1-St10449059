@@ -10,7 +10,6 @@ using CLDV6211_Assignment_Part_1_St10449059.Models;
 
 namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
 {
-    
     public class VenuesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -143,19 +142,33 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var venue = await _context.Venues.FindAsync(id);
+            var venue = await _context.Venues
+                .Include(v => v.Events)
+                    .ThenInclude(e => e.Bookings)
+                .FirstOrDefaultAsync(m => m.VenueId == id);
+
             if (venue != null)
             {
+                foreach (var ev in venue.Events)
+                {
+                    if (ev.Bookings != null)
+                    {
+                        _context.Bookings.RemoveRange(ev.Bookings);
+                    }
+                }
+                _context.Events.RemoveRange(venue.Events);
                 _context.Venues.Remove(venue);
-            }
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
+        // ADDED: Private helper method to verify existence during Edit/Update operations.
         private bool VenueExists(int id)
         {
             return _context.Venues.Any(e => e.VenueId == id);
         }
     }
 }
+
