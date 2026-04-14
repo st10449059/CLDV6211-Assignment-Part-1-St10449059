@@ -10,16 +10,19 @@ using CLDV6211_Assignment_Part_1_St10449059.Models;
 
 namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
 {
+    
     public class VenuesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
+        // Constructor utilizes Dependency Injection to provide the database context (Microsoft, 2023).
         public VenuesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Venues
+        // Implements asynchronous task processing to improve application scalability (Cleary, 2019).
         public async Task<IActionResult> Index()
         {
             return View(await _context.Venues.ToListAsync());
@@ -33,6 +36,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
                 return NotFound();
             }
 
+            // Retrieves a single venue record based on the ID provided in the route.
             var venue = await _context.Venues
                 .FirstOrDefaultAsync(m => m.VenueId == id);
             if (venue == null)
@@ -50,8 +54,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         }
 
         // POST: Venues/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // [HttpPost] and [ValidateAntiForgeryToken] prevent Cross-Site Request Forgery (Freeman, 2022).
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VenueId,VenueName,Location,ImageUrl")] Venue venue)
@@ -82,8 +85,6 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         }
 
         // POST: Venues/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("VenueId,VenueName,Location,ImageUrl")] Venue venue)
@@ -97,11 +98,13 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
             {
                 try
                 {
+                    // Updates the existing record in the database tracking state.
                     _context.Update(venue);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    // Handles database concurrency issues (Lerman & Miller, 2015).
                     if (!VenueExists(venue.VenueId))
                     {
                         return NotFound();
@@ -135,6 +138,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         }
 
         // POST: Venues/Delete/5
+        // Explicitly labeled to handle the POST request from the Delete confirmation page.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

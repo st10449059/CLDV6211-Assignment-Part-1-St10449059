@@ -3,20 +3,25 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CLDV6211_Assignment_Part_1_St10449059</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - EventEase</title>
+
+    @* Linking standard Bootstrap and custom CSS for responsive design (Coyne, 2021) *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CLDV6211_Assignment_Part_1_St10449059.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
+        @* Navigation Bar: Uses dark theme for professional aesthetic. 
+           Tag Helpers (asp-controller, asp-action) manage the dynamic routing system (Microsoft, 2023). 
+        *@
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-calendar-event"></i> EventEase
                 </a>
 
+                @* Mobile Toggler: Ensures the UI remains accessible on smaller screens (Coyne, 2021) *@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -40,20 +45,27 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
+            @* RenderBody() is a placeholder where specific page content is injected (Freeman, 2022) *@
             @RenderBody()
         </main>
     </div>
 
+    @* Footer: Anchored to the bottom using Bootstrap utility classes for layout stability *@
     <footer class="border-top footer text-muted bg-white py-3 mt-auto">
         <div class="container text-center">
             &copy; 2026 - EventEase Management System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    @* JavaScript libraries required for interactive elements and Bootstrap functionality *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* Conditional rendering for page-specific scripts (Microsoft, 2023) *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

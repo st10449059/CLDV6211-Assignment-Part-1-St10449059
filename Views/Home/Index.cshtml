@@ -2,14 +2,18 @@
 
 <div class="container text-center py-5">
     <h1 class="display-4 text-primary fw-bold">EventEase Dashboard</h1>
+
+    @* Navigation Cards: Utilizes Bootstrap grid system and Tag Helpers for intuitive routing (Coyne, 2021) *@
     <div class="row g-4 mt-4">
-        <div class="col-md-4"><a asp-controller="Venues" asp-action="Index" class="btn btn-primary w-100 p-4">📍 Manage Venues</a></div>
-        <div class="col-md-4"><a asp-controller="Events" asp-action="Index" class="btn btn-success w-100 p-4">📅 Manage Events</a></div>
-        <div class="col-md-4"><a asp-controller="Bookings" asp-action="Index" class="btn btn-info w-100 p-4 text-white">🎟️ Manage Bookings</a></div>
+        <div class="col-md-4"><a asp-controller="Venues" asp-action="Index" class="btn btn-primary w-100 p-4 shadow">📍 Manage Venues</a></div>
+        <div class="col-md-4"><a asp-controller="Events" asp-action="Index" class="btn btn-success w-100 p-4 shadow">📅 Manage Events</a></div>
+        <div class="col-md-4"><a asp-controller="Bookings" asp-action="Index" class="btn btn-info w-100 p-4 text-white shadow">🎟️ Manage Bookings</a></div>
     </div>
 </div>
 
 <div class="container pb-5">
+
+    @* VENUES SECTION: Renders data from the primary strongly-typed Model *@
     <h3 class="mt-4">📍 Registered Venues</h3>
     <table class="table table-hover shadow-sm bg-white">
         <thead class="table-dark">
@@ -20,12 +24,14 @@
             </tr>
         </thead>
         <tbody>
+            @* Conditional Logic: Ensures the application handles empty states gracefully (Freeman, 2022) *@
             @if (Model != null && Model.Any())
             {
                 @foreach (var item in Model)
                 {
                     <tr>
                         <td>
+                            @* Implements a ternary operator to provide a fallback image URL (Microsoft, 2023) *@
                             <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/60" : item.ImageUrl)"
                                  width="60" height="40" style="object-fit: cover; border-radius: 4px;" />
                         </td>
@@ -41,6 +47,7 @@
         </tbody>
     </table>
 
+    @* EVENTS SECTION: Consumes data stored in the ViewBag from the HomeController *@
     <h3 class="mt-5">📅 Upcoming Events</h3>
     <table class="table table-hover shadow-sm bg-white">
         <thead class="table-dark">
@@ -51,12 +58,14 @@
             </tr>
         </thead>
         <tbody>
+            @* Type Casting: Explicitly cast ViewBag items to the appropriate List type for iteration (Freeman, 2022) *@
             @if (ViewBag.Events != null && ((List<CLDV6211_Assignment_Part_1_St10449059.Models.Event>)ViewBag.Events).Any())
             {
                 @foreach (var ev in (List<CLDV6211_Assignment_Part_1_St10449059.Models.Event>)ViewBag.Events)
                 {
                     <tr>
                         <td><strong>@ev.EventName</strong></td>
+                        @* Date Formatting: Formats the DateTime object for cleaner UI presentation *@
                         <td>@ev.EventDate.ToString("dd MMM yyyy")</td>
                         <td>@(ev.Venue?.VenueName ?? "N/A")</td>
                     </tr>
@@ -69,6 +78,7 @@
         </tbody>
     </table>
 
+    @* BOOKINGS SECTION *@
     <h3 class="mt-5">🎟️ Recent Bookings</h3>
     <table class="table table-hover shadow-sm bg-white mb-5">
         <thead class="table-dark">

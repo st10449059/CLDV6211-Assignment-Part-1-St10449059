@@ -10,19 +10,22 @@ using CLDV6211_Assignment_Part_1_St10449059.Models;
 
 namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
 {
+    
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
+        // Constructor injection allows the controller to interact with the database context (Microsoft, 2023).
         public EventsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Events
+        // Fetches a list of events and joins the related Venue data using the .Include method.
         public async Task<IActionResult> Index()
         {
-            // Changed '@ => @.Venue' to 'e => e.Venue'
+            // Implementation of Eager Loading ensures related Venue details are available in the View (Freeman, 2022).
             var applicationDbContext = _context.Events.Include(e => e.Venue);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -35,7 +38,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
                 return NotFound();
             }
 
-            // Changed '@ => @.Venue' to 'e => e.Venue'
+            // Retrieves specific event and linked venue data using asynchronous LINQ queries.
             var @event = await _context.Events
                 .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.EventId == id);
@@ -50,7 +53,9 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            // Changed "Location" to "VenueName" so the dropdown is easier to use
+            /* * Populates a SelectList for the UI dropdown. 
+             * This ensures the user selects a valid VenueId from the database (Microsoft, 2023).
+             */
             ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueName");
             return View();
         }
@@ -66,6 +71,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            // Repopulates dropdown if validation fails to maintain state.
             ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueName", @event.VenueId);
             return View(@event);
         }
@@ -106,6 +112,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    // Error handling for concurrent data updates (Lerman & Miller, 2015).
                     if (!EventExists(@event.EventId))
                     {
                         return NotFound();
@@ -129,7 +136,6 @@ namespace CLDV6211_Assignment_Part_1_St10449059.Controllers
                 return NotFound();
             }
 
-            // Changed '@ => @.Venue' to 'e => e.Venue'
             var @event = await _context.Events
                 .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.EventId == id);

@@ -4,44 +4,56 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="display-6">Create Event</h1>
 
-<h4>Event</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
+        @* The asp-action helper ensures the form posts to the correct Controller method (Microsoft, 2023) *@
         <form asp-action="Create">
+            @* Summarizes validation errors at the top of the form for better UX *@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EventName" class="control-label"></label>
-                <input asp-for="EventName" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="EventName" class="control-label fw-bold"></label>
+                <input asp-for="EventName" class="form-control" placeholder="Enter event name" />
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EventDate" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="EventDate" class="control-label fw-bold"></label>
                 <input asp-for="EventDate" class="form-control" />
                 <span asp-validation-for="EventDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="ImageUrl" class="control-label fw-bold"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Paste image URL here" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="VenueId" class="control-label"></label>
-                <select asp-for="VenueId" class ="form-control" asp-items="ViewBag.VenueId"></select>
+
+            <div class="form-group mb-4">
+                <label asp-for="VenueId" class="control-label fw-bold">Select Venue</label>
+                @* This dropdown is populated via the ViewBag.VenueId passed from the Controller *@
+                <select asp-for="VenueId" class="form-select" asp-items="ViewBag.VenueId">
+                    <option value="">-- Select a Venue --</option>
+                </select>
+                <span asp-validation-for="VenueId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary px-4" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @* Client-side validation scripts are injected here to provide real-time 
+       feedback without requiring a server reload (Microsoft, 2023).
+    *@
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
