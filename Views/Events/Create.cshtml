@@ -5,13 +5,11 @@
 }
 
 <h1 class="display-6">Create Event</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-6">
-        @* The asp-action helper ensures the form posts to the correct Controller method (Microsoft, 2023) *@
-        <form asp-action="Create">
-            @* Summarizes validation errors at the top of the form for better UX *@
+        @* FIXED: Added enctype to allow image file uploads *@
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group mb-3">
@@ -26,16 +24,16 @@
                 <span asp-validation-for="EventDate" class="text-danger"></span>
             </div>
 
+            @* FIXED: Changed from text input to File input for Azure Blob Storage *@
             <div class="form-group mb-3">
-                <label asp-for="ImageUrl" class="control-label fw-bold"></label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Paste image URL here" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label class="control-label fw-bold">Event Image</label>
+                <input type="file" name="imageFile" class="form-control" accept="image/*" />
             </div>
 
             <div class="form-group mb-4">
                 <label asp-for="VenueId" class="control-label fw-bold">Select Venue</label>
-                @* This dropdown is populated via the ViewBag.VenueId passed from the Controller *@
-                <select asp-for="VenueId" class="form-select" asp-items="ViewBag.VenueId">
+                @* Fixed: Using double quotes and the @ symbol for the C# expression *@
+                <select asp-for="VenueId" class="form-select" asp-items="@(ViewData["VenueId"] as SelectList)">
                     <option value="">-- Select a Venue --</option>
                 </select>
                 <span asp-validation-for="VenueId" class="text-danger"></span>
@@ -50,9 +48,6 @@
 </div>
 
 @section Scripts {
-    @* Client-side validation scripts are injected here to provide real-time 
-       feedback without requiring a server reload (Microsoft, 2023).
-    *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

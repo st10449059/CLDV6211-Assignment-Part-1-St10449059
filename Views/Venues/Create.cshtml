@@ -50,11 +50,5 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @* Renders the partial view containing jQuery validation scripts to enable 
-       client-side checks before server-side processing (Microsoft, 2023).
-    *@
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
 }
