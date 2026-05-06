@@ -9,7 +9,7 @@
  */
 using Microsoft.EntityFrameworkCore;
 using CLDV6211_Assignment_Part_1_St10449059.Data;
-using CLDV6211_Assignment_Part_1_St10449059.Services; // Ensure this matches your Service namespace
+using CLDV6211_Assignment_Part_1_St10449059.Services;
 
 namespace CLDV6211_Assignment_Part_1_St10449059
 {
@@ -21,13 +21,15 @@ namespace CLDV6211_Assignment_Part_1_St10449059
 
             /* * 1. Database Service Registration: 
              * Registering the ApplicationDbContext into the Dependency Injection (DI) container. 
+             * Source: Microsoft (2023) - Dependency injection in ASP.NET Core.
              */
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             /* * PART 2: Azure Blob Storage Service Registration
              * We retrieve the "AzureBlobStorage" connection string from appsettings.json
-             * and register the BlobService as a Singleton.
+             * and register the BlobService as a Singleton for use across the application.
+             * Source: Microsoft (2023) - Azure Blob storage client library for .NET.
              */
             var blobConnection = builder.Configuration.GetConnectionString("AzureBlobStorage");
             builder.Services.AddSingleton(x => new BlobService(blobConnection));
@@ -57,6 +59,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059
 
             /* * 3. Routing:
              * Defines the Conventional Routing pattern used to map URLs to actions.
+             * Source: Microsoft (2023) - Routing to controller actions in ASP.NET Core.
              */
             app.MapControllerRoute(
                 name: "default",
@@ -66,6 +69,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059
         }
     }
 }
+
 /* * =========================================================================================
  * REFERENCE LIST & ATTRIBUTION (UPDATED FOR PART 2)
  * =========================================================================================
@@ -81,5 +85,7 @@ namespace CLDV6211_Assignment_Part_1_St10449059
  * · Microsoft. (2023). Primary and Foreign Key Constraints. [Online].
  * · Microsoft. (2023). Azure Blob storage documentation. [Online]. Available at: 
  *   https://learn.microsoft.com/en-us/azure/storage/blobs/ [Accessed 05 May 2026].
+ * · Microsoft. (2023). Dependency injection in ASP.NET Core. [Online]. Available at:
+ *   https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection
  * =========================================================================================
  */
