@@ -10,15 +10,19 @@ https://youtu.be/VukVhs6QfwI
 
 # App Running
 # Home Page:  
+<img width="939" height="500" alt="image" src="https://github.com/user-attachments/assets/0558dcf8-92aa-41e1-82c6-5c11ad8965d4" />
 
 
 # Event Page:
+<img width="939" height="500" alt="image" src="https://github.com/user-attachments/assets/98e7f7f4-5767-4621-8ff1-d5bbe2481c9f" />
 
 
 # Venues Page:
+<img width="939" height="498" alt="image" src="https://github.com/user-attachments/assets/dace1406-5b25-4ee3-a45b-e86092895a61" />
 
 
 # Bookings Page:
+<img width="938" height="502" alt="image" src="https://github.com/user-attachments/assets/89635c2d-989d-4fc2-9ac2-0d5b84e69f5d" />
 
 
 
